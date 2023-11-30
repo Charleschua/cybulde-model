@@ -18,19 +18,22 @@ else
 	DOCKER_COMPOSE_COMMAND = docker-compose
 endif
 
-PROD_SERVICE_NAME = app-prod
-PROD_CONTAINER_NAME = cybulde-model-prod-container
-PROD_PROFILE_NAME = prod
+# PROD_SERVICE_NAME = app-prod
+# PROD_CONTAINER_NAME = cybulde-model-prod-container
+# PROD_PROFILE_NAME = prod
 
-ifeq (, $(shell which nvidia-smi))
-	PROFILE = ci
-	CONTAINER_NAME = cybulde-model-ci-container
-	SERVICE_NAME = app-ci
-else
-	PROFILE = dev
-	CONTAINER_NAME = cybulde-model-dev-container
-	SERVICE_NAME = app-dev
-endif
+# ifeq (, $(shell which nvidia-smi))
+# 	PROFILE = ci
+# 	CONTAINER_NAME = cybulde-model-ci-container
+# 	SERVICE_NAME = app-ci
+# else
+# 	PROFILE = dev
+# 	CONTAINER_NAME = cybulde-model-dev-container
+# 	SERVICE_NAME = app-dev
+# endif
+
+SERVICE_NAME = app
+CONTAINER_NAME = cybulde-model-container
 
 DIRS_TO_VALIDATE = cybulde
 DOCKER_COMPOSE_RUN = $(DOCKER_COMPOSE_COMMAND) run --rm $(SERVICE_NAME)
@@ -58,7 +61,7 @@ run-tasks: generate-final-config push
 	$(DOCKER_COMPOSE_EXEC_PROD) python cybulde/launch_job_on_gcp.py
 
 ## Local run tasks
-local-run-tasks: local-generate-final-config
+local-run-tasks: #local-generate-final-config
 	$(DOCKER_COMPOSE_EXEC) torchrun cybulde/run_tasks.py
 
 ## Starts jupyter lab
